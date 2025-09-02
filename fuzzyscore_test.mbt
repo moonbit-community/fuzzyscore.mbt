@@ -380,7 +380,7 @@ test "vscode_fuzzy_score_basic" {
     (pattern, text, score, positions)
   })
   
-  @json.inspect(results, content=([["cat","concatenate",74,[0,4,5]],["con","concatenate",81,[0,1,2]],["","concatenate",0,[]],["concatenate","concatenate",313,[0,1,2,3,4,5,6,7,8,9,10]],["xyz","concatenate",-1000000,[]],["fb","foo_bar",39,[0,4]],["fB","fooBar",40,[0,3]],["tF","testFile",45,[0,4]],["hW","hello_world",37,[0,6]],["abc","abc",81,[0,1,2]],["abc","abcdef",81,[0,1,2]],["abc","aXbXc",49,[0,2,4]],["Test","testFile",110,[0,1,2,3]],["test","TestFile",110,[0,1,2,3]],["swt","ss_ww_tt",61,[0,3,6]]]))
+  @json.inspect(results, content=([["cat","concatenate",69,[3,4,5]],["con","concatenate",69,[0,1,2]],["","concatenate",0,[]],["concatenate","concatenate",253,[0,1,2,3,4,5,6,7,8,9,10]],["xyz","concatenate",-1000000,[]],["fb","foo_bar",39,[0,4]],["fB","fooBar",41,[0,3]],["tF","testFile",47,[3,4]],["hW","hello_world",37,[0,6]],["abc","abc",69,[0,1,2]],["abc","abcdef",69,[0,1,2]],["abc","aXbXc",63,[0,2,4]],["Test","testFile",92,[0,1,2,3]],["test","TestFile",92,[0,1,2,3]],["swt","ss_ww_tt",66,[1,3,6]]]))
 }
 
 ///|
@@ -401,7 +401,7 @@ test "vscode_fuzzy_score_weak_match" {
     (pattern, text, weak, score, positions)
   })
   
-  @json.inspect(results, content=([["cat","concatenate",true,74,[0,4,5]],["cat","concatenate",false,74,[0,4,5]],["test","my_test_file",true,110,[3,4,5,6]],["test","my_test_file",false,110,[3,4,5,6]],["abc","xyzabc",true,74,[3,4,5]],["abc","xyzabc",false,74,[3,4,5]]]))
+  @json.inspect(results, content=([["cat","concatenate",true,69,[3,4,5]],["cat","concatenate",false,69,[3,4,5]],["test","my_test_file",true,92,[3,4,5,6]],["test","my_test_file",false,92,[3,4,5,6]],["abc","xyzabc",true,69,[3,4,5]],["abc","xyzabc",false,69,[3,4,5]]]))
 }
 
 ///|
@@ -438,5 +438,5 @@ test "vscode_fuzzy_score_edge_cases" {
     (pattern, text, score, positions)
   })
   
-  @json.inspect(results, content=([["","",0,[]],["","hello",0,[]],["a","a",23,[0]],["a","ab",23,[0]],["a","ba",16,[1]],["hello","hi",-1000000,[]],["café","café_file",110,[0,1,2,3]],["🌙","moon🌙bit",45,[4,5]],["月","moon月bit",16,[4]],["a.b","a.test.b",76,[0,1,7]],["a-b","a-test-b",76,[0,1,7]],["a_b","a_test_b",76,[0,1,7]],["a b","a test b",76,[0,1,7]]]))
+  @json.inspect(results, content=([["","",0,[]],["","hello",0,[]],["a","a",23,[0]],["a","ab",23,[0]],["a","ba",23,[1]],["hello","hi",-1000000,[]],["café","café_file",92,[0,1,2,3]],["🌙","moon🌙bit",46,[4,5]],["月","moon月bit",23,[4]],["a.b","a.test.b",64,[0,1,7]],["a-b","a-test-b",64,[0,1,7]],["a_b","a_test_b",64,[0,1,7]],["a b","a test b",64,[0,1,7]]]))
 }
