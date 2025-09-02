@@ -30,7 +30,7 @@ test "basic_fuzzy_search" {
 
 test "vscode_algorithm" {
   // VS Code's advanced algorithm with match positions
-  let (score, positions) = @fuzzyscore.vscode_fuzzy_score("cat", "concatenate", true)
+  let (score, positions) = @fuzzyscore.vscode_fuzzy_score_simple("cat", "concatenate", true)
   inspect(score, content="69")
   inspect(positions, content="[3, 4, 5]")
 }
@@ -87,17 +87,17 @@ The complete VS Code fuzzy search algorithm with exact match positions.
 ```moonbit
 test "vscode_comprehensive" {
   // Basic usage
-  let (score, positions) = @fuzzyscore.vscode_fuzzy_score("swt", "ss_ww_tt", true)
+  let (score, positions) = @fuzzyscore.vscode_fuzzy_score_simple("swt", "ss_ww_tt", true)
   inspect(score, content="66")
   inspect(positions, content="[1, 3, 6]")
   
   // Camel case matching
-  let (score2, positions2) = @fuzzyscore.vscode_fuzzy_score("fB", "fooBar", true)  
+  let (score2, positions2) = @fuzzyscore.vscode_fuzzy_score_simple("fB", "fooBar", true)  
   inspect(score2, content="41")
   inspect(positions2, content="[0, 3]")
   
   // Exact match
-  let (score3, positions3) = @fuzzyscore.vscode_fuzzy_score("test", "test", true)
+  let (score3, positions3) = @fuzzyscore.vscode_fuzzy_score_simple("test", "test", true)
   inspect(score3, content="92")
   inspect(positions3, content="[0, 1, 2, 3]")
 }
@@ -121,12 +121,12 @@ The VS Code algorithm uses sophisticated scoring with these constants:
 ```moonbit
 test "scoring_examples" {
   // Consecutive matches get exponential bonuses
-  let (score1, _) = @fuzzyscore.vscode_fuzzy_score("abc", "abc", true)      // 69 - all consecutive
-  let (score2, _) = @fuzzyscore.vscode_fuzzy_score("abc", "aXbXc", true)    // 63 - with gaps
+  let (score1, _) = @fuzzyscore.vscode_fuzzy_score_simple("abc", "abc", true)      // 69 - all consecutive
+  let (score2, _) = @fuzzyscore.vscode_fuzzy_score_simple("abc", "aXbXc", true)    // 63 - with gaps
   
   // Word boundaries are highly valued
-  let (score3, _) = @fuzzyscore.vscode_fuzzy_score("fb", "foo_bar", true)   // 39 - separator bonus
-  let (score4, _) = @fuzzyscore.vscode_fuzzy_score("tF", "testFile", true)  // 47 - camelCase bonus
+  let (score3, _) = @fuzzyscore.vscode_fuzzy_score_simple("fb", "foo_bar", true)   // 39 - separator bonus
+  let (score4, _) = @fuzzyscore.vscode_fuzzy_score_simple("tF", "testFile", true)  // 47 - camelCase bonus
   
   inspect(score1 > score2, content="true")
   inspect(score3 > 32, content="true")  // Better than random positions
@@ -146,7 +146,7 @@ test "performance_test" {
   let long_text = "this_is_a_very_long_file_name_with_many_underscores_and_words_to_test_performance"
   
   // Algorithm handles long strings efficiently
-  let (score, positions) = @fuzzyscore.vscode_fuzzy_score("test", long_text, true)
+  let (score, positions) = @fuzzyscore.vscode_fuzzy_score_simple("test", long_text, true)
   inspect(score > 0, content="true")
   inspect(positions.length() == 4, content="true")
 }
@@ -159,15 +159,15 @@ Full UTF-16 support with proper handling of international characters, emojis, an
 ```moonbit
 test "unicode_support" {
   // Emoji support
-  let (score1, _pos1) = @fuzzyscore.vscode_fuzzy_score("🌙", "moon🌙bit", true)
+  let (score1, _pos1) = @fuzzyscore.vscode_fuzzy_score_simple("🌙", "moon🌙bit", true)
   inspect(score1 > 0, content="true")
   
   // CJK characters  
-  let (score2, _pos2) = @fuzzyscore.vscode_fuzzy_score("月", "moon月bit", true)
+  let (score2, _pos2) = @fuzzyscore.vscode_fuzzy_score_simple("月", "moon月bit", true)
   inspect(score2 > 0, content="true")
   
   // Accented characters
-  let (score3, _pos3) = @fuzzyscore.vscode_fuzzy_score("café", "café_file", true)
+  let (score3, _pos3) = @fuzzyscore.vscode_fuzzy_score_simple("café", "café_file", true)
   inspect(score3 > 0, content="true")
 }
 ```
@@ -187,7 +187,7 @@ test "file_search_example" {
   
   // Search for "main"
   let results = files.map(fn(file) {
-    let (score, positions) = @fuzzyscore.vscode_fuzzy_score("main", file, true)
+    let (score, positions) = @fuzzyscore.vscode_fuzzy_score_simple("main", file, true)
     (file, score, positions)
   }).filter(fn(result) { result.1 > 0 })
   
@@ -210,7 +210,7 @@ test "command_palette_example" {
   // Search for "file"
   let query = "file"
   let matches = commands.map(fn(cmd) {
-    let (score, positions) = @fuzzyscore.vscode_fuzzy_score(query, cmd.to_lower(), true)
+    let (score, positions) = @fuzzyscore.vscode_fuzzy_score_simple(query, cmd.to_lower(), true)
     (cmd, score, positions)
   }).filter(fn(result) { result.1 > 0 })
   
@@ -237,7 +237,7 @@ test "algorithm_comparison" {
   let simple_match = @fuzzyscore.fuzzy_match(pattern, text)
   
   // VS Code algorithm  
-  let (vscode_score, positions) = @fuzzyscore.vscode_fuzzy_score(pattern, text, true)
+  let (vscode_score, positions) = @fuzzyscore.vscode_fuzzy_score_simple(pattern, text, true)
   
   // VS Code provides much better scoring
   inspect(vscode_score > simple_score, content="true")

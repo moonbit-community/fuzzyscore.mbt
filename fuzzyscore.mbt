@@ -157,20 +157,38 @@ pub fn fuzzy_score_ignore_case(pattern : String, text : String) -> Int {
 ///
 pub fn vscode_fuzzy_score(
   pattern : String,
+  pattern_start : Int,
   word : String,
+  word_start : Int,
   first_match_can_be_weak : Bool,
 ) -> (Int, Array[Int]) {
+  // Extract substrings based on start positions
+  let pattern_sub = if pattern_start == 0 && pattern.length() > 0 {
+    pattern
+  } else if pattern_start < pattern.length() {
+    pattern.substring(start=pattern_start)
+  } else {
+    ""
+  }
+  let word_sub = if word_start == 0 && word.length() > 0 {
+    word
+  } else if word_start < word.length() {
+    word.substring(start=word_start)
+  } else {
+    ""
+  }
+
   // Early-exit edge cases -----------------------------------------------------
-  if pattern.length() == 0 {
+  if pattern_sub.length() == 0 {
     return (0, [])
   }
-  if pattern.length() > word.length() {
+  if pattern_sub.length() > word_sub.length() {
     return (-1_000_000, [])
   }
 
   // Lower‐case copies for case-insensitive comparison.
-  let pattern_lower = pattern.to_lower()
-  let word_lower = word.to_lower()
+  let pattern_lower = pattern_sub.to_lower()
+  let word_lower = word_sub.to_lower()
   let p_len = pattern_lower.length()
   let w_len = word_lower.length()
 
@@ -199,7 +217,7 @@ pub fn vscode_fuzzy_score(
       return true
     }
     let prev = word_lower[idx - 1]
-    let curr = word[idx] // Use original case for camelCase detection
+    let curr = word_sub[idx] // Use original case for camelCase detection
 
     // After separator
     if is_separator(prev) {
@@ -220,11 +238,11 @@ pub fn vscode_fuzzy_score(
     word_idx : Int,
   ) -> Int {
     // CAMEL_BONUS = 1 when pattern char matches case of word char at camel boundary
+    // This is applied when we have a camelCase transition (lower->upper) AND both chars match case
     if word_idx > 0 &&
       is_lower(word_lower[word_idx - 1]) &&
       is_upper(word_ch) &&
-      is_upper(pattern_ch) &&
-      pattern_ch == word_ch {
+      pattern_ch == word_ch { // Both original case must match
       return 1
     }
     0
@@ -232,7 +250,7 @@ pub fn vscode_fuzzy_score(
 
   // First pass – fill first pattern character row ----------------------------
   let p_ch_lower = pattern_lower[0]
-  let p_ch_orig = pattern[0]
+  let p_ch_orig = pattern_sub[0]
   for idx = 0; idx < w_len; idx = idx + 1 {
     if p_ch_lower == word_lower[idx] {
       let mut score = 16 // MATCH base
@@ -245,12 +263,12 @@ pub fn vscode_fuzzy_score(
       }
 
       // Case match bonus
-      if p_ch_orig == word[idx] {
+      if p_ch_orig == word_sub[idx] {
         score = 23 // UPPER_CASE_MATCH (or exact case match)
       }
 
       // Camel bonus
-      score = score + get_camel_bonus(p_ch_orig, word[idx], idx)
+      score = score + get_camel_bonus(p_ch_orig, word_sub[idx], idx)
       scores_prev[idx] = score
       path_matrix[0 * w_len + idx] = 1 // Mark as match
     }
@@ -277,7 +295,7 @@ pub fn vscode_fuzzy_score(
       scores_curr[j] = -1_000_000
     }
     let p_char_lower = pattern_lower[pi]
-    let p_char_orig = pattern[pi]
+    let p_char_orig = pattern_sub[pi]
     let mut max_so_far = -1_000_000
     for wi = 0; wi < w_len; wi = wi + 1 {
       // Three possible transitions: left (gap), up (skip), diagonal (match)
@@ -312,12 +330,13 @@ pub fn vscode_fuzzy_score(
           }
 
           // Case match bonus
-          if p_char_orig == word[wi] {
+          if p_char_orig == word_sub[wi] {
             match_score = diagonal_base + 23 // UPPER_CASE_MATCH
           }
 
           // Camel bonus
-          match_score = match_score + get_camel_bonus(p_char_orig, word[wi], wi)
+          match_score = match_score +
+            get_camel_bonus(p_char_orig, word_sub[wi], wi)
           if match_score > best_score {
             best_score = match_score
             best_path = 1 // diagonal match
@@ -371,10 +390,20 @@ pub fn vscode_fuzzy_score(
     }
   }
 
-  // Reverse positions array since we built it backwards
+  // Reverse positions array since we built it backwards and adjust for word_start offset
   let final_positions : Array[Int] = []
   for i = positions.length() - 1; i >= 0; i = i - 1 {
-    final_positions.push(positions[i])
+    final_positions.push(positions[i] + word_start)
   }
   return (best_score, final_positions)
+}
+
+///|
+/// Convenience wrapper for vscode_fuzzy_score with default start positions
+pub fn vscode_fuzzy_score_simple(
+  pattern : String,
+  word : String,
+  first_match_can_be_weak : Bool,
+) -> (Int, Array[Int]) {
+  vscode_fuzzy_score(pattern, 0, word, 0, first_match_can_be_weak)
 }

@@ -22,7 +22,7 @@ fn main {
   // Demo VS Code algorithm
   println("")
   println("=== VS Code Algorithm Demo ===")
-  let (score3, positions3) = @lib.vscode_fuzzy_score(pattern, text, true)
+  let (score3, positions3) = @lib.vscode_fuzzy_score_simple(pattern, text, true)
   println("Pattern: \{pattern}")
   println("Text: \{text}")
   println("VS Code Score: \{score3}")
@@ -33,7 +33,9 @@ fn main {
   println("=== Your Example: 'swt' vs 'ss_ww_tt' ===")
   let pattern4 = "swt"
   let text4 = "ss_ww_tt"
-  let (score4, positions4) = @lib.vscode_fuzzy_score(pattern4, text4, true)
+  let (score4, positions4) = @lib.vscode_fuzzy_score_simple(
+    pattern4, text4, true,
+  )
   println("Pattern: \{pattern4}")
   println("Text: \{text4}")
   println("Simple Score: \{@lib.fuzzy_score(pattern4, text4)}")
