@@ -1,0 +1,20 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "bobzhang/fuzzyscore"
+
+// Values
+fn fuzzy_match(String, String) -> Bool
+
+fn fuzzy_match_ignore_case(String, String) -> Bool
+
+fn fuzzy_score(String, String) -> Int
+
+fn fuzzy_score_ignore_case(String, String) -> Int
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

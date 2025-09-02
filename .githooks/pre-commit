@@ -1,0 +1,12 @@
+#!/bin/sh
+# pre-commit hook to run moon check
+
+echo "Running moon check..."
+if ! output=$(moon check 2>&1); then
+  echo "❌ moon check failed. Commit aborted."
+  echo
+  echo "$output"
+  exit 1
+fi
+
+echo "✅ moon check passed."
