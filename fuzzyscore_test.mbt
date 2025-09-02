@@ -343,3 +343,100 @@ test "fuzzy_match_challenging_cases" {
   
   @json.inspect(results, content=([["a","aaaaaaa",true,10],["aaa","aaaaaaa",true,23],["aaaa","aaa",false,-1],["abab","aabbab",true,17],["abcd","aabbccdd",true,14],["xyz","xxyyzz",true,14],["abc","axbxc",true,14],["abc","axxxbxxxc",true,12],["test","txexsxt",true,15],["github","github.com",true,56],["readme","README.md",false,-1],["config","config.json",true,56],["v1.2","version_1.2.3",true,23],["2023","file_2023_data",true,16],["js","script.js",true,1],["py","main.py",true,2],["","",true,0],["a","",false,-1],["","a",true,0],["x","x",true,100],["API","ApiController",false,-1],["SQL","sql_query",false,-1],["HTTP","HttpRequest",false,-1]]))
 }
+
+///|
+/// Test VS Code faithful fuzzy scoring algorithm
+test "vscode_fuzzy_score_basic" {
+  let test_cases = [
+    // Basic matches
+    ("cat", "concatenate"),
+    ("con", "concatenate"),
+    ("", "concatenate"),
+    ("concatenate", "concatenate"),
+    ("xyz", "concatenate"), // no match
+    
+    // Word boundaries and separators
+    ("fb", "foo_bar"),
+    ("fB", "fooBar"),
+    ("tF", "testFile"),
+    ("hW", "hello_world"),
+    
+    // Consecutive matches
+    ("abc", "abc"),
+    ("abc", "abcdef"),
+    ("abc", "aXbXc"),
+    
+    // Case sensitivity
+    ("Test", "testFile"),
+    ("test", "TestFile"),
+    
+    // Your specific example
+    ("swt", "ss_ww_tt"),
+  ]
+  
+  let results = test_cases.map(fn(case) {
+    let (pattern, text) = case
+    let (score, positions) = vscode_fuzzy_score(pattern, text, true)
+    (pattern, text, score, positions)
+  })
+  
+  @json.inspect(results, content=([["cat","concatenate",74,[0,4,5]],["con","concatenate",81,[0,1,2]],["","concatenate",0,[]],["concatenate","concatenate",313,[0,1,2,3,4,5,6,7,8,9,10]],["xyz","concatenate",-1000000,[]],["fb","foo_bar",39,[0,4]],["fB","fooBar",40,[0,3]],["tF","testFile",45,[0,4]],["hW","hello_world",37,[0,6]],["abc","abc",81,[0,1,2]],["abc","abcdef",81,[0,1,2]],["abc","aXbXc",49,[0,2,4]],["Test","testFile",110,[0,1,2,3]],["test","TestFile",110,[0,1,2,3]],["swt","ss_ww_tt",61,[0,3,6]]]))
+}
+
+///|
+/// Test VS Code algorithm with first_match_can_be_weak parameter
+test "vscode_fuzzy_score_weak_match" {
+  let test_cases = [
+    ("cat", "concatenate", true),
+    ("cat", "concatenate", false),
+    ("test", "my_test_file", true),
+    ("test", "my_test_file", false),
+    ("abc", "xyzabc", true),
+    ("abc", "xyzabc", false),
+  ]
+  
+  let results = test_cases.map(fn(case) {
+    let (pattern, text, weak) = case
+    let (score, positions) = vscode_fuzzy_score(pattern, text, weak)
+    (pattern, text, weak, score, positions)
+  })
+  
+  @json.inspect(results, content=([["cat","concatenate",true,74,[0,4,5]],["cat","concatenate",false,74,[0,4,5]],["test","my_test_file",true,110,[3,4,5,6]],["test","my_test_file",false,110,[3,4,5,6]],["abc","xyzabc",true,74,[3,4,5]],["abc","xyzabc",false,74,[3,4,5]]]))
+}
+
+///|
+/// Test VS Code algorithm edge cases
+test "vscode_fuzzy_score_edge_cases" {
+  let test_cases = [
+    // Empty patterns
+    ("", ""),
+    ("", "hello"),
+    
+    // Single characters
+    ("a", "a"),
+    ("a", "ab"),
+    ("a", "ba"),
+    
+    // Pattern longer than text
+    ("hello", "hi"),
+    
+    // Unicode handling
+    ("café", "café_file"),
+    ("🌙", "moon🌙bit"),
+    ("月", "moon月bit"),
+    
+    // Special separators
+    ("a.b", "a.test.b"),
+    ("a-b", "a-test-b"),
+    ("a_b", "a_test_b"),
+    ("a b", "a test b"),
+  ]
+  
+  let results = test_cases.map(fn(case) {
+    let (pattern, text) = case
+    let (score, positions) = vscode_fuzzy_score(pattern, text, true)
+    (pattern, text, score, positions)
+  })
+  
+  @json.inspect(results, content=([["","",0,[]],["","hello",0,[]],["a","a",23,[0]],["a","ab",23,[0]],["a","ba",16,[1]],["hello","hi",-1000000,[]],["café","café_file",110,[0,1,2,3]],["🌙","moon🌙bit",45,[4,5]],["月","moon月bit",16,[4]],["a.b","a.test.b",76,[0,1,7]],["a-b","a-test-b",76,[0,1,7]],["a_b","a_test_b",76,[0,1,7]],["a b","a test b",76,[0,1,7]]]))
+}
