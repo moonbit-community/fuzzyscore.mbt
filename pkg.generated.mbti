@@ -10,6 +10,8 @@ fn fuzzy_score(String, String) -> Int
 
 fn fuzzy_score_ignore_case(String, String) -> Int
 
+fn vscode_fuzzy_score(String, String, Bool) -> (Int, Array[Int])
+
 // Errors
 
 // Types and methods

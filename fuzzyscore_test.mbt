@@ -15,7 +15,7 @@ test "fuzzy_match_basic" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text, expected) = case
-    let actual = fuzzy_match(pattern, text)
+    let actual = @fuzzyscore.fuzzy_match(pattern, text)
     (pattern, text, expected, actual, actual == expected)
   })
   @json.inspect(results, content=[
@@ -50,7 +50,7 @@ test "fuzzy_score_basic" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text) = case
-    let score = fuzzy_score(pattern, text)
+    let score = @fuzzyscore.fuzzy_score(pattern, text)
     (pattern, text, score)
   })
   @json.inspect(results, content=[
@@ -81,8 +81,8 @@ test "fuzzy_match_ignore_case" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text) = case
-    let match_result = fuzzy_match_ignore_case(pattern, text)
-    let score = fuzzy_score_ignore_case(pattern, text)
+    let match_result = @fuzzyscore.fuzzy_match_ignore_case(pattern, text)
+    let score = @fuzzyscore.fuzzy_score_ignore_case(pattern, text)
     (pattern, text, match_result, score)
   })
   @json.inspect(results, content=[
@@ -113,8 +113,8 @@ test "fuzzy_match_edge_cases" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text) = case
-    let match_result = fuzzy_match(pattern, text)
-    let score = fuzzy_score(pattern, text)
+    let match_result = @fuzzyscore.fuzzy_match(pattern, text)
+    let score = @fuzzyscore.fuzzy_score(pattern, text)
     (pattern, text, match_result, score)
   })
   @json.inspect(results, content=[
@@ -148,7 +148,7 @@ test "fuzzy_score_bonuses" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text) = case
-    let score = fuzzy_score(pattern, text)
+    let score = @fuzzyscore.fuzzy_score(pattern, text)
     (pattern, text, score)
   })
   @json.inspect(results, content=[
@@ -178,8 +178,8 @@ test "fuzzy_match_utf16" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text) = case
-    let match_result = fuzzy_match(pattern, text)
-    let score = fuzzy_score(pattern, text)
+    let match_result = @fuzzyscore.fuzzy_match(pattern, text)
+    let score = @fuzzyscore.fuzzy_score(pattern, text)
     (pattern, text, match_result, score)
   })
   @json.inspect(results, content=[
@@ -206,8 +206,8 @@ test "fuzzy_match_performance" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text) = case
-    let match_result = fuzzy_match(pattern, text)
-    let score = fuzzy_score(pattern, text)
+    let match_result = @fuzzyscore.fuzzy_match(pattern, text)
+    let score = @fuzzyscore.fuzzy_score(pattern, text)
     (pattern, text, match_result, score)
   })
   @json.inspect(results, content=[
@@ -283,8 +283,8 @@ test "fuzzy_match_advanced_patterns" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text) = case
-    let match_result = fuzzy_match(pattern, text)
-    let score = fuzzy_score(pattern, text)
+    let match_result = @fuzzyscore.fuzzy_match(pattern, text)
+    let score = @fuzzyscore.fuzzy_score(pattern, text)
     (pattern, text, match_result, score)
   })
   @json.inspect(results, content=[
@@ -359,8 +359,8 @@ test "fuzzy_match_challenging_cases" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text) = case
-    let match_result = fuzzy_match(pattern, text)
-    let score = fuzzy_score(pattern, text)
+    let match_result = @fuzzyscore.fuzzy_match(pattern, text)
+    let score = @fuzzyscore.fuzzy_score(pattern, text)
     (pattern, text, match_result, score)
   })
   @json.inspect(results, content=[
@@ -421,7 +421,7 @@ test "vscode_fuzzy_score_basic" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text) = case
-    let (score, positions) = vscode_fuzzy_score(pattern, text, true)
+    let (score, positions) = @fuzzyscore.vscode_fuzzy_score(pattern, text, true)
     (pattern, text, score, positions)
   })
   @json.inspect(results, content=[
@@ -456,7 +456,7 @@ test "vscode_fuzzy_score_weak_match" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text, weak) = case
-    let (score, positions) = vscode_fuzzy_score(pattern, text, weak)
+    let (score, positions) = @fuzzyscore.vscode_fuzzy_score(pattern, text, weak)
     (pattern, text, weak, score, positions)
   })
   @json.inspect(results, content=[
@@ -498,7 +498,7 @@ test "vscode_fuzzy_score_edge_cases" {
   ]
   let results = test_cases.map(fn(case) {
     let (pattern, text) = case
-    let (score, positions) = vscode_fuzzy_score(pattern, text, true)
+    let (score, positions) = @fuzzyscore.vscode_fuzzy_score(pattern, text, true)
     (pattern, text, score, positions)
   })
   @json.inspect(results, content=[
