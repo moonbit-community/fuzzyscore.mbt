@@ -2,14 +2,6 @@
 package "bobzhang/fuzzyscore"
 
 // Values
-fn fuzzy_match(String, String) -> Bool
-
-fn fuzzy_match_ignore_case(String, String) -> Bool
-
-fn fuzzy_score(String, String) -> Int
-
-fn fuzzy_score_ignore_case(String, String) -> Int
-
 fn vscode_fuzzy_score(String, Int, String, Int, Bool) -> (Int, Array[Int])
 
 fn vscode_fuzzy_score_simple(String, String, Bool) -> (Int, Array[Int])

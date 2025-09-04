@@ -1,4 +1,3 @@
-
 ///|
 /// Test VS Code faithful fuzzy scoring algorithm
 test "vscode_fuzzy_score_basic" {

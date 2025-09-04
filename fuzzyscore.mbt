@@ -1,9 +1,3 @@
-
-
-
-
-
-
 ///|
 /// Faithful port of VS Code's `fuzzyScore` algorithm (commit 5e5685c, src/vs/base/common/filters.ts L601-850)
 /// 
