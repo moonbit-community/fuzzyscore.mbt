@@ -18,15 +18,7 @@ This library implements VS Code's sophisticated fuzzy search algorithm that powe
 ## Quick Start
 
 ```moonbit
-test "basic_fuzzy_search" {
-  // Simple subsequence matching
-  let matches = @fuzzyscore.fuzzy_match("cat", "concatenate")
-  inspect(matches, content="true")
-  
-  // Get score for ranking results
-  let score = @fuzzyscore.fuzzy_score("cat", "concatenate") 
-  inspect(score, content="13")
-}
+
 
 test "vscode_algorithm" {
   // VS Code's advanced algorithm with match positions
@@ -37,46 +29,6 @@ test "vscode_algorithm" {
 ```
 
 ## API Reference
-
-### Simple Fuzzy Search
-
-#### `fuzzy_match(pattern: String, text: String) -> Bool`
-
-Basic subsequence matching - checks if all pattern characters appear in text in order.
-
-```moonbit
-test "fuzzy_match_examples" {
-  inspect(@fuzzyscore.fuzzy_match("swt", "ss_ww_tt"), content="true")
-  inspect(@fuzzyscore.fuzzy_match("fb", "foo_bar"), content="true")  
-  inspect(@fuzzyscore.fuzzy_match("xyz", "concatenate"), content="false")
-}
-```
-
-#### `fuzzy_score(pattern: String, text: String) -> Int`
-
-Returns a score (higher is better) with bonuses for consecutive matches and word boundaries.
-
-```moonbit
-test "fuzzy_score_examples" {
-  let score1 = @fuzzyscore.fuzzy_score("test", "test_file")  // 32 - start + consecutive
-  let score2 = @fuzzyscore.fuzzy_score("tf", "test_file")    // 16 - word boundaries  
-  let score3 = @fuzzyscore.fuzzy_score("xyz", "test_file")   // -1 - no match
-  
-  inspect(score1, content="32")
-  inspect(score2, content="16")
-  inspect(score3, content="-1")
-}
-```
-
-#### Case-Insensitive Variants
-
-```moonbit
-test "case_insensitive" {
-  inspect(@fuzzyscore.fuzzy_match_ignore_case("API", "ApiController"), content="true")
-  let score = @fuzzyscore.fuzzy_score_ignore_case("MOON", "MoonBit")
-  inspect(score, content="33")
-}
-```
 
 ### VS Code Algorithm
 
@@ -227,24 +179,7 @@ test "command_palette_example" {
 | **Positions** | None | Exact positions |
 | **Use Case** | Quick filtering | Production search |
 
-```moonbit
-test "algorithm_comparison" {
-  let pattern = "swt"
-  let text = "ss_ww_tt"
-  
-  // Simple algorithm
-  let simple_score = @fuzzyscore.fuzzy_score(pattern, text)
-  let simple_match = @fuzzyscore.fuzzy_match(pattern, text)
-  
-  // VS Code algorithm  
-  let (vscode_score, positions) = @fuzzyscore.vscode_fuzzy_score_simple(pattern, text, true)
-  
-  // VS Code provides much better scoring
-  inspect(vscode_score > simple_score, content="true")
-  inspect(simple_match, content="true")
-  inspect(positions, content="[1, 3, 6]")
-}
-```
+
 
 ## Contributing
 

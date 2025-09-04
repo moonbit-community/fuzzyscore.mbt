@@ -6,8 +6,8 @@ fn main {
   println("=== Simple Fuzzy Search Demo ===")
   println("Pattern: \{pattern}")
   println("Text: \{text}")
-  println("Match: \{@lib.fuzzy_match(pattern, text)}")
-  println("Score: \{@lib.fuzzy_score(pattern, text)}")
+  // println("Match: \{@lib.fuzzy_match(pattern, text)}")
+  // println("Score: \{@lib.fuzzy_score(pattern, text)}")
 
   // Test case-insensitive matching
   let pattern2 = "MOON"
@@ -16,8 +16,8 @@ fn main {
   println("=== Case-insensitive Demo ===")
   println("Pattern: \{pattern2}")
   println("Text: \{text2}")
-  println("Match: \{@lib.fuzzy_match_ignore_case(pattern2, text2)}")
-  println("Score: \{@lib.fuzzy_score_ignore_case(pattern2, text2)}")
+  // println("Match: \{@lib.fuzzy_match_ignore_case(pattern2, text2)}")
+  // println("Score: \{@lib.fuzzy_score_ignore_case(pattern2, text2)}")
 
   // Demo VS Code algorithm
   println("")
@@ -38,7 +38,7 @@ fn main {
   )
   println("Pattern: \{pattern4}")
   println("Text: \{text4}")
-  println("Simple Score: \{@lib.fuzzy_score(pattern4, text4)}")
+  // println("Simple Score: \{@lib.fuzzy_score(pattern4, text4)}")
   println("VS Code Score: \{score4}")
   println("Match Positions: \{positions4}")
 }
