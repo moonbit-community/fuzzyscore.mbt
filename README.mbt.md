@@ -17,7 +17,7 @@ This library implements VS Code's sophisticated fuzzy search algorithm that powe
 
 ## Quick Start
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "vscode_algorithm" {
   // VS Code's advanced algorithm with match positions
@@ -37,7 +37,7 @@ test "vscode_algorithm" {
 
 The complete VS Code fuzzy search algorithm with exact match positions.
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "vscode_comprehensive" {
   // Basic usage
@@ -78,7 +78,7 @@ The VS Code algorithm uses sophisticated scoring with these constants:
 | `GAP_LEADING` | -5 | Penalty for leading unmatched characters |
 | `GAP_INNER` | -1 | Penalty for gaps between matches |
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "scoring_examples" {
   // Consecutive matches get exponential bonuses
@@ -104,7 +104,7 @@ test "scoring_examples" {
 - **Early Exit**: Optimized for cases where no good match is possible
 - **UTF-16 Optimized**: Efficient character code operations
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "performance_test" {
   let long_text = "this_is_a_very_long_file_name_with_many_underscores_and_words_to_test_performance"
@@ -122,7 +122,7 @@ test "performance_test" {
 
 Full UTF-16 support with proper handling of international characters, emojis, and complex scripts.
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "unicode_support" {
   // Emoji support
@@ -149,7 +149,7 @@ test "unicode_support" {
 
 ### File Search
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "file_search_example" {
   let files = [
@@ -173,7 +173,7 @@ test "file_search_example" {
 
 ### Command Palette
 
-```moonbit nocheck
+```moonbit check
 ///|
 test "command_palette_example" {
   let commands = [
