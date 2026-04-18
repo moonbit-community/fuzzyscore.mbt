@@ -2,9 +2,9 @@
 package "bobzhang/fuzzyscore"
 
 // Values
-fn vscode_fuzzy_score(String, Int, String, Int, Bool) -> (Int, Array[Int])
+pub fn vscode_fuzzy_score(String, Int, String, Int, Bool) -> (Int, Array[Int])
 
-fn vscode_fuzzy_score_simple(String, String, Bool) -> (Int, Array[Int])
+pub fn vscode_fuzzy_score_simple(String, String, Bool) -> (Int, Array[Int])
 
 // Errors
 
