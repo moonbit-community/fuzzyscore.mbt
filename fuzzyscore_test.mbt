@@ -34,7 +34,7 @@ test "vscode_fuzzy_score_basic" {
     )
     (pattern, text, score, positions)
   })
-  @json.inspect(results, content=[
+  json_inspect(results, content=[
     ["cat", "concatenate", 69, [3, 4, 5]],
     ["con", "concatenate", 69, [0, 1, 2]],
     ["", "concatenate", 0, []],
@@ -71,7 +71,7 @@ test "vscode_fuzzy_score_weak_match" {
     )
     (pattern, text, weak, score, positions)
   })
-  @json.inspect(results, content=[
+  json_inspect(results, content=[
     ["cat", "concatenate", true, 69, [3, 4, 5]],
     ["cat", "concatenate", false, 69, [3, 4, 5]],
     ["test", "my_test_file", true, 92, [3, 4, 5, 6]],
@@ -115,7 +115,7 @@ test "vscode_fuzzy_score_edge_cases" {
     )
     (pattern, text, score, positions)
   })
-  @json.inspect(results, content=[
+  json_inspect(results, content=[
     ["", "", 0, []],
     ["", "hello", 0, []],
     ["a", "a", 23, [0]],
@@ -191,7 +191,7 @@ test "vscode_comprehensive_test_suite" {
     let score_match = actual_score == expected_score
     let positions_match = actual_positions.length() ==
       expected_positions.length() &&
-      {
+      ({
         let mut all_match = true
         for i = 0; i < actual_positions.length(); i = i + 1 {
           if actual_positions[i] != expected_positions[i] {
@@ -200,13 +200,13 @@ test "vscode_comprehensive_test_suite" {
           }
         }
         all_match
-      }
+      })
     (
       pattern, text, expected_score, actual_score, score_match, expected_positions,
       actual_positions, positions_match,
     )
   })
-  @json.inspect(results, content=[
+  json_inspect(results, content=[
     ["", "", 0, 0, true, [], [], true],
     ["", "anything", 0, 0, true, [], [], true],
     ["a", "", -1000000, -1000000, true, [], [], true],
@@ -275,7 +275,7 @@ test "vscode_fuzzy_score_with_offsets" {
       actual_score, score_match, expected_positions, actual_positions, positions_match,
     )
   })
-  @json.inspect(results, content=[
+  json_inspect(results, content=[
     [
       "test",
       0,

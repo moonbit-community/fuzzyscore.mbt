@@ -64,14 +64,14 @@ pub fn vscode_fuzzy_score(
   let pattern_sub = if pattern_start == 0 && pattern.length() > 0 {
     pattern
   } else if pattern_start < pattern.length() {
-    pattern.substring(start=pattern_start)
+    pattern[pattern_start:].to_string()
   } else {
     ""
   }
   let word_sub = if word_start == 0 && word.length() > 0 {
     word
   } else if word_start < word.length() {
-    word.substring(start=word_start)
+    word[word_start:].to_string()
   } else {
     ""
   }
