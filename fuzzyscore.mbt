@@ -99,13 +99,13 @@ pub fn vscode_fuzzy_score(
   let path_matrix = Array::make(p_len * w_len, 0)
 
   // Helper functions for character classification
-  let is_separator = fn(ch : Int) -> Bool {
+  let is_separator = fn(ch : UInt16) -> Bool {
     ch == 95 || ch == 45 || ch == 32 || ch == 46 || ch == 47 || ch == 92 // _ - space . / \
   }
-  let is_upper = fn(ch : Int) -> Bool {
+  let is_upper = fn(ch : UInt16) -> Bool {
     ch >= 65 && ch <= 90 // A-Z
   }
-  let is_lower = fn(ch : Int) -> Bool {
+  let is_lower = fn(ch : UInt16) -> Bool {
     ch >= 97 && ch <= 122 // a-z
   }
 
@@ -131,8 +131,8 @@ pub fn vscode_fuzzy_score(
 
   // Get camel bonus for matching pattern char to word char
   let get_camel_bonus = fn(
-    pattern_ch : Int,
-    word_ch : Int,
+    pattern_ch : UInt16,
+    word_ch : UInt16,
     word_idx : Int,
   ) -> Int {
     // CAMEL_BONUS = 1 when pattern char matches case of word char at camel boundary
