@@ -26,7 +26,8 @@ fn main {
   println("Pattern: \{pattern}")
   println("Text: \{text}")
   println("VS Code Score: \{score3}")
-  println("Match Positions: \{positions3}")
+  let positions3_text = positions3.map(fn(i) { i.to_string() }).join(", ")
+  println("Match Positions: [\{positions3_text}]")
 
   // Test your specific example
   println("")
@@ -40,5 +41,6 @@ fn main {
   println("Text: \{text4}")
   // println("Simple Score: \{@lib.fuzzy_score(pattern4, text4)}")
   println("VS Code Score: \{score4}")
-  println("Match Positions: \{positions4}")
+  let positions4_text = positions4.map(fn(i) { i.to_string() }).join(", ")
+  println("Match Positions: [\{positions4_text}]")
 }
