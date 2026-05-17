@@ -25,7 +25,7 @@ test "vscode_algorithm" {
     "cat", "concatenate", true,
   )
   inspect(score, content="69")
-  inspect(positions, content="[3, 4, 5]")
+  debug_inspect(positions, content="[3, 4, 5]")
 }
 ```
 
@@ -45,21 +45,21 @@ test "vscode_comprehensive" {
     "swt", "ss_ww_tt", true,
   )
   inspect(score, content="66")
-  inspect(positions, content="[1, 3, 6]")
+  debug_inspect(positions, content="[1, 3, 6]")
 
   // Camel case matching
   let (score2, positions2) = @fuzzyscore.vscode_fuzzy_score_simple(
     "fB", "fooBar", true,
   )
   inspect(score2, content="41")
-  inspect(positions2, content="[0, 3]")
+  debug_inspect(positions2, content="[0, 3]")
 
   // Exact match
   let (score3, positions3) = @fuzzyscore.vscode_fuzzy_score_simple(
     "test", "test", true,
   )
   inspect(score3, content="92")
-  inspect(positions3, content="[0, 1, 2, 3]")
+  debug_inspect(positions3, content="[0, 1, 2, 3]")
 }
 ```
 
