@@ -1,0 +1,17 @@
+name = "bobzhang/fuzzyscore"
+
+version = "0.1.1"
+
+readme = "README.md"
+
+repository = "https://github.com/moonbit-community/fuzzyscore.mbt"
+
+license = "Apache-2.0"
+
+keywords = [ ]
+
+description = ""
+
+options(
+  "alert-list": "+test_import_all",
+)

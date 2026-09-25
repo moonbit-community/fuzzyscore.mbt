@@ -13,4 +13,3 @@ pub fn vscode_fuzzy_score_simple(String, String, Bool) -> (Int, Array[Int])
 // Type aliases
 
 // Traits
-

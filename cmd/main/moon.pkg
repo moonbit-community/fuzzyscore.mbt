@@ -2,6 +2,4 @@ import {
   "bobzhang/fuzzyscore" @lib,
 }
 
-options(
-  "is-main": true,
-)
+pkgtype(kind: "executable")
