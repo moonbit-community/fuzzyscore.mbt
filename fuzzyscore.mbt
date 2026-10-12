@@ -55,11 +55,11 @@
 ///
 pub fn vscode_fuzzy_score(
   pattern : String,
-  pattern_start : Int,
+  pattern_start : Int32,
   word : String,
-  word_start : Int,
+  word_start : Int32,
   first_match_can_be_weak : Bool,
-) -> (Int, Array[Int]) {
+) -> (Int32, Array[Int32]) {
   // Extract substrings based on start positions
   let pattern_sub = if pattern_start == 0 && pattern.length() > 0 {
     pattern
@@ -110,7 +110,7 @@ pub fn vscode_fuzzy_score(
   }
 
   // Helper to classify word boundaries (separator or camel-case boundary)
-  let is_word_start = fn(idx : Int) -> Bool {
+  let is_word_start = fn(idx : Int32) -> Bool {
     if idx == 0 {
       return true
     }
@@ -133,8 +133,8 @@ pub fn vscode_fuzzy_score(
   let get_camel_bonus = fn(
     pattern_ch : UInt16,
     word_ch : UInt16,
-    word_idx : Int,
-  ) -> Int {
+    word_idx : Int32,
+  ) -> Int32 {
     // CAMEL_BONUS = 1 when pattern char matches case of word char at camel boundary
     // This is applied when we have a camelCase transition (lower->upper) AND both chars match case
     if word_idx > 0 &&
@@ -266,7 +266,7 @@ pub fn vscode_fuzzy_score(
   }
 
   // Reconstruct optimal path by walking backwards through path matrix --------
-  let positions : Array[Int] = []
+  let positions : Array[Int32] = []
   let mut curr_pi = p_len - 1
   let mut curr_wi = best_end_pos
 
@@ -289,7 +289,7 @@ pub fn vscode_fuzzy_score(
   }
 
   // Reverse positions array since we built it backwards and adjust for word_start offset
-  let final_positions : Array[Int] = []
+  let final_positions : Array[Int32] = []
   for i = positions.length() - 1; i >= 0; i = i - 1 {
     final_positions.push(positions[i] + word_start)
   }
@@ -302,6 +302,6 @@ pub fn vscode_fuzzy_score_simple(
   pattern : String,
   word : String,
   first_match_can_be_weak : Bool,
-) -> (Int, Array[Int]) {
+) -> (Int32, Array[Int32]) {
   vscode_fuzzy_score(pattern, 0, word, 0, first_match_can_be_weak)
 }
